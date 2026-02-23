@@ -8,6 +8,13 @@ def standardize_dataset(df, column_mapping=None):
        Choice -> 'left'/'right'
        CuePosition -> 'left'/'right'
        Reward -> 'yes'/'no'
+
+    NOTE:
+    If your dataset is a .mat file, load it first using:
+        from scipy.io import loadmat
+        data = loadmat("your_file.mat")
+    Then convert the relevant structure to a pandas DataFrame
+    before passing it to this function.
     """
 
     # -----------------------------------------
