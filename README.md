@@ -1,36 +1,208 @@
 # StrategyTracker (Python)
 
-Python toolbox for Bayesian tracking of behavioural strategies across trials on choice tasks
+A user-friendly Python toolbox for Bayesian tracking of behavioural strategies across trials in choice tasks.
 
-Read the Strategy Tracker paper at eLife: https://doi.org/10.7554/eLife.86491
+Based on the Strategy Tracker paper (eLife):  
+https://doi.org/10.7554/eLife.86491  
 
-Tested with: Python 3.9 onwards
+Tested with Python 3.9+
 
 (A MATLAB version is available here: https://github.com/Humphries-Lab/Bayesian_Strategy_Analysis_MATLAB)
 
-## Top-level scripts
-Two scripts demonstrate the main use of the Toolbox:
-1. Demonstrate_Bayesian_strategy_analysis: shows how to run the algorithm for a single strategy model  
-2. Replicate_Figure1: replicates panels c, d, and e of Figure 1 in the paper, to demonstrate the full workflow: choosing strategies, computing p(strategy) for each, interpolating probabilities for Null trials, and then plotting the appropriate time-series of probabilities
+---
 
-## Modules
-- strategymodels.py contains functions that implement the strategy models
+# What This Toolbox Does
 
-## Data
-- data.csv: data from Rat 2 of the Peyrache et al 2009 (Nat Neurosci) study of Y-maze performance (see pre-print for details)
+This toolbox:
 
-## Folders
-- Functions/: the set of functions that implement the Bayesian algorithm and summarise the Beta distribution (MAP estimate, precision etc)
+- Computes posterior probability of behavioural strategies trial-by-trial  
+- Uses Beta-Bernoulli conjugate Bayesian updating  
+- Estimates MAP probability and posterior precision  
+- Reproduces Figure 1-style multi-strategy analysis  
+- Detects learning using three different criteria  
+- Automatically standardizes user datasets  
+- Is fully config-driven (no need to edit notebooks)
 
-# How do I use the toolbox with my data?
-1. Put your data into a format that can be read into a DataFrame using Pandas. We use Pandas' "read_csv" function in our examples, which requires the data to be in CSV format - see any of the top-level scripts for examples. 
-2. Use Replicate_Figure1.py as a template. Make a copy (e.g. My_Strategy_Analysis.py). Edit that copy to load your data (in the format of Step 1) and select the strategies you want to apply (in the list "strategies = ['go_left',...,]); then run it and see the results
-3. Write your own strategy models: see the strategymodels.py module for examples and a template. All strategy model functions have the same input (rows of the DataFrame up to the current trial) and output (the trial type as a string). Then simply add the name of the new function to your list of strategies in your script. And run it!
+---
 
-# Things to be aware of
-- Names and values of data variables: the supplied strategy models assume that the loaded dataset uses the following names and values for each variable: Choice ("left","right'), Reward ("yes","no"), CuePosition ("left","right"). 
+# Project Structure
 
-- Omissions: the supplied strategy functions assume the subject made a choice on each trial. If your data contain trials with omissions (e.g. the subject did not engage on that trial) then either (a) remove those trials from the dataset before using the strategy analysis on them, or (b) edit the code to handle how you coded the omissions in your data. For example, if you coded an omission as Choice = NaN, then assign any trial with Choice = NaN as a "null" trial-type for *every* strategy; the best place to do that would be in the top-level script -- an if/else that checked first whether the trial was an omission, and then only evaluated the trial-type for each strategy if it was not an omission.
+.
+├── config.py  
+├── strategymodels.py  
+├── Functions/  
+│   ├── standardize_dataset.py  
+│   ├── set_Beta_prior.py  
+│   ├── update_strategy_posterior_probability.py  
+│   ├── Summaries_of_Beta_distribution.py  
+│   ├── interpolate_null_trials.py  
+│   └── plotSessionStructure.py  
+├── 1_Demonstrate_Bayesian.ipynb  
+├── 2_Replicate_Figure1.ipynb  
+├── 3_Learning_Detection.ipynb  
+└── README.md  
+
+---
+
+# Quick Start
+
+## 1️⃣ Install dependencies
+
+pip install numpy pandas matplotlib scipy
+
+---
+
+## 2️⃣ Prepare Your Dataset
+
+Your dataset must contain the following columns:
+
+| Column       | Required Format      |
+|-------------|---------------------|
+| TrialIndex  | integer             |
+| Choice      | "left" / "right"    |
+| CuePosition | "left" / "right"    |
+| Reward      | "yes" / "no"        |
+
+If your dataset uses numeric encodings (e.g. 0/1 or 1/2), the toolbox automatically converts them using:
+
+standardize_dataset()
+
+---
+
+## 📌 Using a .mat file
+
+If your dataset is in MATLAB (.mat) format:
+
+from scipy.io import loadmat  
+import pandas as pd  
+
+data = loadmat("your_file.mat")  
+
+Convert the relevant structure into a pandas DataFrame, then save as CSV and use normally.
+
+---
+
+# Configuration
+
+All parameters are defined in:
+
+config.py
+
+Example:
+
+data_path = "your_dataset.csv"  
+prior_type = "Uniform"  
+decay_rate = 0.9  
+
+You do NOT need to modify the notebooks.
+
+To run analysis on a new dataset:
+
+1. Place your CSV in the project folder  
+2. Change only data_path in config.py  
+3. Run the notebooks  
+
+---
+
+# Notebooks
+
+## 1️⃣ Demonstrate Bayesian Strategy Analysis
+
+Runs Bayesian updating for a single strategy.  
+Outputs:
+- MAP probability across trials  
+- Posterior precision  
+
+---
+
+## 2️⃣ Replicate Figure 1
+
+Runs multi-strategy analysis.
+
+Outputs:
+- Rule strategies (MAP probability)
+- Posterior precision
+- Exploratory strategies
+- Automatic dominant rule detection
+- Dynamic session summary
+
+This notebook adapts automatically to the dataset provided.
+
+---
+
+## 3️⃣ Learning Detection
+
+Implements three learning criteria:
+
+Strategy 1 — Sequence Criterion  
+First trial where MAP remains above chance (0.5).
+
+Strategy 2 — Sequence + Precision  
+Sequence criterion plus precision dominance over competing strategies.
+
+Strategy 3 — Expert Criterion  
+Posterior probability excludes chance with high confidence.
+
+Outputs:
+- Learning trial for each method  
+- Comparison table  
+- Visual overlay on MAP plot  
+
+---
+
+# Mathematical Framework
+
+Strategies are modeled using a Beta-Bernoulli conjugate update:
+
+p(θ | data) ~ Beta(α, β)
+
+Where:
+
+α = successes + prior  
+β = failures + prior  
+
+MAP estimate:
+
+(α - 1) / (α + β - 2)
+
+Precision reflects posterior confidence.
+
+---
+
+# Supported Strategies
+
+- go_left  
+- go_right  
+- go_cued  
+- win_stay_spatial  
+- lose_shift_cued  
+- lose_shift_spatial  
+
+Custom strategies can be added to strategymodels.py.
+
+---
+
+# Things To Be Aware Of
+
+- Dataset must represent one session per file  
+- Omission trials must be removed or handled before analysis  
+- Large raw data files should not be committed to GitHub  
+
+---
 
 # Problems?
-- Raise an "Issue" here on the GitHub repository. In the "Issue" give the problem/bug you came across (and where) or the question you have about how to use the toolbox
+
+Raise an Issue on the GitHub repository with:
+
+- The error message  
+- The notebook used  
+- A small example of your dataset format  
+
+---
+
+# Author
+
+Ceren Kimyonok  
+MSc Neuroscience  
+University of Nottingham  
+
