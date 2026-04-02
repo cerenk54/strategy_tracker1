@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+
+.DS_Store
+
+.ipynb_checkpoints/
+
+.pytest_cache/
+.mypy_cache/
+
+.venv/
+venv/
+env/
+
+# Jupyter-generated noise
+*.nbconvert.ipynb

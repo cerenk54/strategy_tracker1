@@ -5,8 +5,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-data_path = os.path.join(BASE_DIR, "Ukey_2018_06_05.csv")        # user data path
-strategy_name = "go_right"        # e.g., "go_left", "go_right", "go_cued", ...
+data_path = os.path.join(BASE_DIR, "data.csv")        # user data path
+strategy_name ="go_left"        # e.g., "go_left", "go_right", "go_cued", ...
 prior_type = "Uniform"           # "Uniform" / "Optimistic" / "Pessimistic"
 decay_rate = 0.9                 # 1.0 = no decay, <1.0 discounts older trials
 save_output_csv = False          # True if you want to save Output.csv
