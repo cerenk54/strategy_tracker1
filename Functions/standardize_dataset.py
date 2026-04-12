@@ -35,9 +35,8 @@ def standardize_dataset(df, column_mapping=None):
     # -----------------------------------------
     # 2) Standardize Choice
     # -----------------------------------------
-    if df["Choice"].dtype != object:
-        unique_vals = set(df["Choice"].dropna().unique())
-
+    unique_vals = set(df["Choice"].dropna().unique())
+    if not unique_vals.issubset({"left", "right"}):
         if unique_vals.issubset({0, 1}):
             df["Choice"] = df["Choice"].map({0: "left", 1: "right"})
         elif unique_vals.issubset({1, 2}):
@@ -50,9 +49,8 @@ def standardize_dataset(df, column_mapping=None):
     # -----------------------------------------
     # 3) Standardize CuePosition
     # -----------------------------------------
-    if df["CuePosition"].dtype != object:
-        unique_vals = set(df["CuePosition"].dropna().unique())
-
+    unique_vals = set(df["CuePosition"].dropna().unique())
+    if not unique_vals.issubset({"left", "right"}):
         if unique_vals.issubset({0, 1}):
             df["CuePosition"] = df["CuePosition"].map({0: "left", 1: "right"})
         elif unique_vals.issubset({1, 2}):
@@ -65,9 +63,8 @@ def standardize_dataset(df, column_mapping=None):
     # -----------------------------------------
     # 4) Standardize Reward
     # -----------------------------------------
-    if df["Reward"].dtype != object:
-        unique_vals = set(df["Reward"].dropna().unique())
-
+    unique_vals = set(df["Reward"].dropna().unique())
+    if not unique_vals.issubset({"yes", "no"}):
         if unique_vals.issubset({0, 1}):
             df["Reward"] = df["Reward"].map({0: "no", 1: "yes"})
         else:

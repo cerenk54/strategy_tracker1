@@ -89,14 +89,4 @@ def plotSessionStructure(TestData, block_labels=None):
                 clip_on=False,
             )
 
-    # "Rule for Reward" title above band
-    ax.text(
-        0.5,
-        band_ymax + 0.02,
-        "Rule for Reward",
-        ha='center',
-        va='bottom',
-        transform=ax.transAxes,
-        fontsize=9,
-        clip_on=False,
-    )
+    
