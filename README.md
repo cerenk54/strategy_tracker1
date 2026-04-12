@@ -48,13 +48,23 @@ This toolbox:
 
 # Quick Start
 
-## 1️⃣ Install dependencies
+## 1️⃣ Clone the repository
+
+git clone https://github.com/your-username/strategy_tracker1.git
+cd strategy_tracker1
+
+## 2️⃣ Install dependencies
 
 pip install numpy pandas matplotlib scipy
+
+Or if using conda:
+
+conda install numpy pandas matplotlib scipy
 
 ---
 
 ## 2️⃣ Prepare Your Dataset
+To use this toolbox, provide your own dataset as a CSV file and update `data_path` in `config.py`. Place your CSV file in the project folder. If you are using a .mat format, first check the next step.
 
 Your dataset must contain the following columns:
 
@@ -108,6 +118,7 @@ To run analysis on a new dataset:
 ---
 
 # Notebooks
+Run the notebooks in order:
 
 ## 1️⃣ Demonstrate Bayesian Strategy Analysis
 
@@ -206,6 +217,6 @@ Raise an Issue on the GitHub repository with:
 # Author
 
 Ceren Kimyonok  
-MSc Neuroscience  
+MSc Computational Neuroscience 
 University of Nottingham  
 
