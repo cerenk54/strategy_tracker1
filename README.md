@@ -37,9 +37,11 @@ This toolbox:
 │   ├── Summaries_of_Beta_distribution.py  
 │   ├── interpolate_null_trials.py  
 │   └── plotSessionStructure.py  
-├── 1_Demonstrate_Bayesian.ipynb  
-├── 2_Replicate_Figure1.ipynb  
-├── 3_Learning_Detection.ipynb  
+├── NOTEBOOKS/  
+│   ├── 1_Demonstrate_Bayesian.ipynb   
+│   ├── 2_Replicate_Figure1.ipynb  
+│   ├── 3_LearningSequenceCriterion.ipynb 
+│   ├── 4_LearningCriteriaComparison.ipynb 
 └── README.md  
 
 ---
@@ -72,13 +74,14 @@ standardize_dataset()
 ## 📌 Using a .mat file
 
 If your dataset is in MATLAB (.mat) format:
+In MATLAB run the following;
 
 from scipy.io import loadmat  
 import pandas as pd  
 
 data = loadmat("your_file.mat")  
 
-Convert the relevant structure into a pandas DataFrame, then save as CSV and use normally.
+Convert the relevant structure into a pandas DataFrame, then save as CSV and use normally. 
 
 ---
 
