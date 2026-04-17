@@ -36,7 +36,7 @@ def standardize_dataset(df, column_mapping=None):
     # 2) Standardize Choice
     # -----------------------------------------
     unique_vals = set(df["Choice"].dropna().unique())
-    if not unique_vals.issubset({"left", "right"}):
+    if not unique_vals.issubset({"left", "right", "omission", "Omission", "OMISSION"}):
         if unique_vals.issubset({0, 1}):
             df["Choice"] = df["Choice"].map({0: "left", 1: "right"})
         elif unique_vals.issubset({1, 2}):
@@ -71,5 +71,14 @@ def standardize_dataset(df, column_mapping=None):
             raise ValueError(
                 f"Unsupported numeric encoding in 'Reward': {unique_vals}"
             )
+
+    # -----------------------------------------
+    # 5) Remove omission trials
+    # -----------------------------------------
+    omission_mask = df["Choice"].isin(["omission", "Omission", "OMISSION"])
+    if omission_mask.any():
+        n_removed = omission_mask.sum()
+        print(f"[standardize_dataset] Removed {n_removed} omission trial(s) from 'Choice'.")
+        df = df[~omission_mask].reset_index(drop=True)
 
     return df
