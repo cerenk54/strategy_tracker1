@@ -30,6 +30,7 @@ This toolbox:
 .
 ├── config.py  
 ├── strategymodels.py  
+├── Convert_matlab_file_to_csv.py  
 ├── Functions/  
 │   ├── standardize_dataset.py  
 │   ├── set_Beta_prior.py  
@@ -83,15 +84,27 @@ standardize_dataset()
 
 ## 📌 Using a .mat file
 
-If your dataset is in MATLAB (.mat) format:
-In MATLAB run the following;
+If your dataset is in MATLAB (.mat) format, use the included conversion script:
 
-from scipy.io import loadmat  
-import pandas as pd  
+**`Convert_matlab_file_to_csv.py`**
 
-data = loadmat("your_file.mat")  
+Run this script from the terminal:
 
-Convert the relevant structure into a pandas DataFrame, then save as CSV and use normally. 
+    python Convert_matlab_file_to_csv.py
+
+A file dialog will open. Select one or more `.mat` files. The script will:
+
+1. Load each `.mat` file (supports both MATLAB v7.3 and older formats)
+2. Convert all data structures to tables
+3. Save one `.csv` file per data structure in the **same folder as the selected `.mat` file**
+
+The output filename follows the pattern: `<original_name>_<field_name>.csv`
+
+After conversion, place the resulting CSV in the project folder, update `data_path` in `config.py`, and run the notebooks as normal.
+
+**Required packages for conversion** — run this in your terminal before using the script:
+
+    pip install mat73 scipy numpy pandas
 
 ---
 
@@ -199,7 +212,7 @@ Custom strategies can be added to strategymodels.py.
 # Things To Be Aware Of
 
 - Dataset must represent one session per file  
-- Omission trials must be removed or handled before analysis  
+- Omission trials (Choice = "omission") are automatically removed by `standardize_dataset()`  
 - Large raw data files should not be committed to GitHub  
 
 ---
