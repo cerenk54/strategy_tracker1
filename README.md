@@ -152,8 +152,11 @@ You do NOT need to modify the notebooks.
 To run analysis on a new dataset:
 
 1. Place your CSV in the project folder  
-2. Change only data_path in config.py  
-3. Run the notebooks  
+2. Change only `data_path` in `config.py`  
+3. **Restart the kernel** (Kernel → Restart Kernel, or press `0` `0` in Jupyter)  
+4. Run the notebooks  
+
+> ⚠️ **Important:** You must restart the kernel every time you switch to a different CSV file. Without a restart, the old dataset remains in memory and results will be incorrect.
 
 ---
 
