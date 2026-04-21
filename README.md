@@ -76,9 +76,36 @@ Your dataset must contain the following columns:
 | CuePosition | "left" / "right"    |
 | Reward      | "yes" / "no"        |
 
-If your dataset uses numeric encodings (e.g. 0/1 or 1/2), the toolbox automatically converts them using:
+If your dataset uses numeric encodings (e.g. 0/1 or 1/2), the toolbox automatically converts them using `standardize_dataset()`.
 
-standardize_dataset()
+### Common errors and fixes
+
+**Missing column:**
+```
+❌ ERROR: Your CSV is missing the required column 'TrialIndex'.
+   Your CSV has these columns: ['trial', 'choice_side', ...]
+```
+Fix: In `config.py`, update `COLUMN_MAPPING` to map your column names to the expected names:
+```python
+COLUMN_MAPPING = {
+    "trial": "TrialIndex",
+    "choice_side": "Choice",
+    "cue_side": "CuePosition",
+    "rewarded": "Reward"
+}
+```
+
+**Unrecognised Choice values:**
+```
+❌ ERROR: 'Choice' column contains unrecognised values.
+```
+Fix: Choice must be `"left"`/`"right"`, `0`/`1`, or `1`/`2`. If your values differ (e.g. `"L"`/`"R"`), recode them manually before running the notebook.
+
+**Unrecognised Reward values:**
+```
+❌ ERROR: 'Reward' column contains unrecognised values.
+```
+Fix: Reward must be `"yes"`/`"no"` or `0`/`1`.
 
 ---
 
