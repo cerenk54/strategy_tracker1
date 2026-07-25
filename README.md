@@ -135,6 +135,15 @@ After conversion, place the resulting CSV in the project folder, update `data_pa
 
 ---
 
+# Data Files
+
+
+ `data.csv` : Example/demo dataset used to run the notebooks in this repo (394 trials, 14 sessions, 4 rule blocks: go right / go to the lit arm / go left / go to the dark arm). This is the dataset currently referenced by `data_path` in `config.py`. 
+
+To run the notebooks on your own data, replace `data.csv` (or point `data_path` in `config.py` at your own file) — see the [Prepare Your Dataset] section above for the required format.
+
+---
+
 # Configuration
 
 All parameters are defined in:
