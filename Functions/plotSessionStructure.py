@@ -39,7 +39,13 @@ def plotSessionStructure(TestData, block_labels=None):
     block_edges = np.append(rule_lines, float(no_trials))
 
     if block_labels is None:
-        block_labels = ["Right Arm", "Lit Arm", "Left Arm", "Unlit Arm"]
+        if 'TargetRule' in TestData.columns:
+            block_labels = [
+                TestData.iloc[int(start)]['TargetRule']
+                for start in block_edges[:-1]
+            ]
+        else:
+            block_labels = [f"Block {i + 1}" for i in range(len(block_edges) - 1)]
 
     # Band position in axes fraction (above the axes)
     band_ymin = 1.02
